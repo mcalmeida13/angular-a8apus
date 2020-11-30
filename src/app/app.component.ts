@@ -2,6 +2,14 @@ import { Component } from "@angular/core";
 
 function log(target, name, descriptor) {
   console.log(target, name, descriptor);
+  // 1. store the original function in a varible
+  const original = descriptor.value;
+  // 2. do some manipulations with descriptor.value
+  descriptor.value = function() {
+    console.log("This function was hacked!");
+  };
+  // 3. retrun the descriptor
+  return descriptor;
 }
 
 @Component({
@@ -11,6 +19,10 @@ function log(target, name, descriptor) {
 })
 export class AppComponent {
   title: "app";
+
+  constructor() {
+    this.aSimpleMethod();
+  }
 
   @log
   aSimpleMethod() {
